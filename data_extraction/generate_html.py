@@ -1,49 +1,86 @@
 import csv
+import os
+from bs4 import BeautifulSoup
 
-def csv_to_html(csv_file, output_file):
-    html_content = ""
+def csv_to_html(csv_file, html_file):
     try:
+        # Check files
+        if not os.path.exists(csv_file):
+            print(f"CSV file not found: {csv_file}")
+            return
+        if not os.path.exists(html_file):
+            print(f"HTML file not found: {html_file}")
+            return
+
+        # Generate HTML cards
+        cards_html = ""
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                html_content += f"""
+                # Check for empty fields to avoid "None" or weird display
+                title = row.get('Title', 'Untitled')
+                authors = row.get('Authors', '')
+                date = row.get('Date', '')
+                pub_type = row.get('Type', '')
+                abstract = row.get('Abstract', '')
+                link = row.get('Link', '#')
+                
+                # Truncate abstract if too long
+                if len(abstract) > 300:
+                    abstract = abstract[:300] + "..."
+
+                card = f"""
                 <div class="card publication-card" style="margin-bottom: 20px;">
-                    <h3>{row['Title']}</h3>
-                    <p><strong>Authors:</strong> {row['Authors']}</p>
-                    <p><strong>Date:</strong> {row['Date']} <span style="margin-left: 10px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">{row['Type']}</span></p>
-                    <p><em>{row['Abstract']}</em></p>
-                    <a href="{row['Link']}" target="_blank" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View Paper</a>
+                    <h3>{title}</h3>
+                    <p><strong>Authors:</strong> {authors}</p>
+                    <p><strong>Date:</strong> {date} <span style="margin-left: 10px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">{pub_type}</span></p>
+                    <p><em>{abstract}</em></p>
+                    <a href="{link}" target="_blank" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View Paper</a>
                 </div>
                 """
+                cards_html += card
+
+        # Update HTML file
+        with open(html_file, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f, 'html.parser')
         
-        # Read the existing HTML template
-        with open(output_file, 'r', encoding='utf-8') as f:
-            template = f.read()
+        # Find the container
+        container = soup.find('div', class_='card-grid')
+        if container:
+            # Clear existing content
+            container.clear()
+            # Insert new content (need to parse the new string as soup objects or insert as HTML)
+            # BeautifulSoup 4 can handle string insertion if we parse it first or use append
+            new_content_soup = BeautifulSoup(cards_html, 'html.parser')
+            container.append(new_content_soup)
             
-        # Replace the placeholder content
-        # We'll look for the card-grid div content
-        start_marker = '<div class="card-grid" style="display: block;">'
-        end_marker = '<!-- Publications List -->'
-        
-        # Simple replacement for now, aiming to inject into the specific area
-        # Ideally we'd parse the HTML, but string replacement works for this controlled file
-        
-        # Let's just create a fragment file that the user can verify or we can manually inject
-        # Actually, let's rewrite the whole file with the new content injected
-        
-        new_html = template.replace(
-            '<!-- Publications List -->', 
-            html_content
-        )
-        
-        # Write back
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(new_html)
-            
-        print("HTML updated successfully.")
-        
+            # Write back
+            with open(html_file, 'w', encoding='utf-8') as f:
+                f.write(str(soup))
+            print(f"Successfully updated {html_file} with publications.")
+        else:
+            print("Could not find div with class 'card-grid' in HTML.")
+
     except Exception as e:
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    csv_to_html("data_extraction/publications.csv", "website/publications.html")
+    # Handle paths relative to where script is run
+    import os
+    base_dir = os.getcwd()
+    
+    # Assumptions: 
+    # if run from data_extraction: csv is ./publications.csv, html is ../website/publications.html
+    # if run from root: csv is data_extraction/publications.csv, html is website/publications.html
+    
+    if os.path.exists("publications.csv"):
+        csv_path = "publications.csv"
+        html_path = "../website/publications.html"
+    elif os.path.exists("data_extraction/publications.csv"):
+        csv_path = "data_extraction/publications.csv"
+        html_path = "website/publications.html"
+    else:
+        print("Could not locate publications.csv")
+        exit(1)
+        
+    csv_to_html(csv_path, html_path)
