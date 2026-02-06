@@ -1,4 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Dark Mode Toggle Logic
+    const themeToggle = document.querySelector('.theme-toggle');
+    const body = document.body;
+    const icon = themeToggle ? themeToggle.querySelector('i') : null;
+
+    // Check saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        if (icon) icon.className = 'fas fa-sun';
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            
+            // Update icon
+            if (icon) {
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            // Save preference
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    }
+
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -8,13 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
             
-            // Animate hamburger lines
             const spans = hamburger.querySelectorAll('span');
             if (navLinks.classList.contains('active')) {
                 spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
                 spans[1].style.opacity = '0';
                 spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
-                document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                document.body.style.overflow = 'hidden';
             } else {
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
@@ -24,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Close menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             if (navLinks.classList.contains('active')) {
@@ -39,19 +64,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Publication Search Functionality
+    // Publication Search & Highlighting
     const searchInput = document.getElementById('pubSearch');
+    const pubCards = document.querySelectorAll('.publication-card');
+    const originalContent = new Map();
+
+    if (pubCards.length > 0) {
+        pubCards.forEach((card, index) => {
+            originalContent.set(index, card.innerHTML);
+        });
+    }
+
     if (searchInput) {
-        searchInput.addEventListener('keyup', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.publication-card');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.trim().toLowerCase();
             
-            cards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                const text = card.textContent.toLowerCase();
+            pubCards.forEach((card, index) => {
+                const title = card.querySelector('h3').textContent;
+                const authors = card.querySelector('.authors') ? card.querySelector('.authors').textContent : '';
+                const abstract = card.querySelector('.abstract') ? card.querySelector('.abstract').textContent : '';
+                const text = title + ' ' + authors + ' ' + abstract;
                 
-                if (title.includes(searchTerm) || text.includes(searchTerm)) {
-                    card.style.display = 'block';
+                // Reset content
+                card.innerHTML = originalContent.get(index);
+                
+                if (searchTerm === '') {
+                    card.style.display = 'flex';
+                    return;
+                }
+
+                if (text.toLowerCase().includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    highlightText(card, searchTerm);
                 } else {
                     card.style.display = 'none';
                 }
@@ -59,7 +103,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Intersection Observer for Animations
+    function highlightText(element, term) {
+        if (!term) return;
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+        const textNodes = [];
+        while (walker.nextNode()) {
+            textNodes.push(walker.currentNode);
+        }
+
+        textNodes.forEach(node => {
+            const parent = node.parentNode;
+            if (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE' || parent.tagName === 'MARK') return;
+
+            const text = node.textContent;
+            if (text.toLowerCase().includes(term)) {
+                const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+                const newHtml = text.replace(regex, '<mark>$1</mark>');
+                const span = document.createElement('span');
+                span.innerHTML = newHtml;
+                parent.replaceChild(span, node);
+                parent.innerHTML = parent.innerHTML.replace(/<span>(.*?)<\/span>/g, '$1'); 
+            }
+        });
+    }
+
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // Scroll Animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: "0px 0px -50px 0px"
@@ -81,12 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
     
-    // Add visible class handler
-    document.addEventListener('scroll', () => {
-        // Simple fallback or additional scroll logic if needed
-    });
-    
-    // Helper to add 'visible' class
     const addVisible = () => {
         document.querySelectorAll('.visible').forEach(el => {
             el.style.opacity = '1';
@@ -94,6 +160,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    // Run periodically to catch up
     setInterval(addVisible, 100);
 });

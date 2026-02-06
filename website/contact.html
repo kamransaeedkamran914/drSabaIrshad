@@ -22,10 +22,16 @@
                     <span></span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="research.html">Research</a></li>
-                    <li><a href="publications.html">Publications</a></li>
-                    <li><a href="contact.html" class="active">Contact</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="biography.html"><i class="fas fa-user"></i> Biography</a></li>
+                    <li><a href="research.html"><i class="fas fa-flask"></i> Research</a></li>
+                    <li><a href="publications.html"><i class="fas fa-book"></i> Publications</a></li>
+                    <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li>
+                        <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -36,37 +42,71 @@
             <h1>Get in Touch</h1>
             <p class="subtitle" style="color: var(--md-sys-color-on-surface-variant);">Reach out for collaboration, supervision, or academic inquiries.</p>
             
-            <div class="contact-info" style="margin-top: 40px;">
-                <div class="card" style="text-align: center;">
-                    <i class="fas fa-map-marker-alt card-icon"></i>
-                    <h3>Address</h3>
-                    <p>School of Biochemistry & Biotechnology<br>
-                    University of the Punjab, New Campus<br>
-                    Lahore, Pakistan</p>
+            <div style="display: flex; gap: var(--spacing-lg); flex-wrap: wrap; margin-top: 40px;">
+                <!-- Contact Cards -->
+                 <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 20px;">
+                    <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 20px; text-align: left; background-color: var(--md-sys-color-surface-variant); border: none;">
+                        <div style="background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.1rem; color: var(--md-sys-color-on-surface);">Address</h3>
+                            <p style="margin: 0; font-size: 0.95rem;">School of Biochemistry & Biotechnology<br>
+                            University of the Punjab, New Campus<br>
+                            Lahore, Pakistan</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 20px; text-align: left; background-color: var(--md-sys-color-surface-variant); border: none;">
+                        <div style="background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.1rem; color: var(--md-sys-color-on-surface);">Phone</h3>
+                            <p style="margin: 0; font-size: 0.95rem;">
+                                Office: +92-42-99230355 (Ext. 112)<br>
+                                Mobile: 0321-9991983
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 20px; text-align: left; background-color: var(--md-sys-color-surface-variant); border: none;">
+                        <div style="background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.1rem; color: var(--md-sys-color-on-surface);">Email</h3>
+                            <p style="margin: 0; font-size: 0.95rem;"><a href="mailto:saba.ibb@pu.edu.pk">saba.ibb@pu.edu.pk</a></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <i class="fas fa-phone card-icon"></i>
-                    <h3>Phone</h3>
-                    <p>Office: +92-42-99230355 (Ext. 112)<br>
-                    Mobile: 0321-9991983</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <i class="fas fa-envelope card-icon"></i>
-                    <h3>Email</h3>
-                    <p><a href="mailto:saba.ibb@pu.edu.pk">saba.ibb@pu.edu.pk</a></p>
+
+                <!-- Map / Additional Info -->
+                <div style="flex: 1 1 400px; min-height: 300px;">
+                     <div class="card" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 2px dashed var(--md-sys-color-outline-variant); background: transparent; box-shadow: none;">
+                        <i class="fas fa-university" style="font-size: 3rem; color: var(--md-sys-color-primary); margin-bottom: 20px;"></i>
+                        <h3>Official University Profile</h3>
+                        <p>View verified academic credentials and latest administrative updates.</p>
+                        <a href="https://pu.edu.pk/faculty/description/299/Prof-Dr-Saba-Irshad.html" target="_blank" class="btn btn-primary">
+                            Visit PU.edu.pk <i class="fas fa-external-link-alt" style="margin-left: 8px;"></i>
+                        </a>
+                     </div>
                 </div>
             </div>
 
             <div style="margin-top: 60px; text-align: center;">
-                 <h2>Find Me Online</h2>
-                 <div class="hero-buttons" style="justify-content: center;">
-                    <a href="https://www.researchgate.net/profile/Saba-Irshad-2" target="_blank" class="btn btn-primary">
+                 <h2>Connect Online</h2>
+                 <div class="hero-buttons" style="justify-content: center; margin-top: 20px;">
+                    <a href="https://pk.linkedin.com/in/prof-dr-saba-irshad-443580b0" target="_blank" class="btn btn-secondary" style="color: #0077b5; background: white; border-color: #0077b5;">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://www.researchgate.net/profile/Saba-Irshad-2" target="_blank" class="btn btn-secondary" style="color: #00ccbb; background: white; border-color: #00ccbb;">
                         <i class="fab fa-researchgate"></i> ResearchGate
                     </a>
-                    <a href="https://pu.edu.pk/faculty/description/299/Prof-Dr-Saba-Irshad.html" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-university"></i> University Profile
+                    <a href="https://independent.academia.edu/DrSabaIrshad" target="_blank" class="btn btn-secondary" style="color: #A41034; background: white; border-color: #A41034;">
+                        <i class="fas fa-graduation-cap"></i> Academia
                     </a>
-                    <a href="https://orcid.org/0000-0002-2509-8281" target="_blank" class="btn btn-primary">
+                    <a href="https://orcid.org/0000-0002-2509-8281" target="_blank" class="btn btn-secondary" style="color: #a6ce39; background: white; border-color: #a6ce39;">
                         <i class="fab fa-orcid"></i> ORCID
                     </a>
                  </div>
