@@ -1,31 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Dark Mode Toggle Logic
-    const themeToggle = document.querySelector('.theme-toggle');
-    const body = document.body;
-    const icon = themeToggle ? themeToggle.querySelector('i') : null;
-
-    // Check saved preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        if (icon) icon.className = 'fas fa-sun';
-    }
-
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const isDark = body.classList.contains('dark-mode');
-            
-            // Update icon
-            if (icon) {
-                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            }
-            
-            // Save preference
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-    }
-
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');

@@ -16,7 +16,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Typography */
@@ -85,7 +84,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: background-color 0.3s;
+  width: 100%;
 }
 
 nav {
@@ -103,6 +102,12 @@ nav {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
+}
+
+.logo:hover {
+    text-decoration: none;
+    color: var(--md-sys-color-primary);
 }
 
 .nav-links {
@@ -125,25 +130,9 @@ nav {
 }
 
 .nav-links a:hover, .nav-links a.active {
-  color: var(--md-sys-color-on-secondary-container);
-  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
   text-decoration: none;
-}
-
-/* Dark Mode Toggle */
-.theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--md-sys-color-on-surface);
-    font-size: 1.2rem;
-    padding: 8px;
-    border-radius: 50%;
-    transition: background-color 0.3s;
-}
-
-.theme-toggle:hover {
-    background-color: var(--md-sys-color-surface-variant);
 }
 
 .hamburger {
@@ -151,6 +140,7 @@ nav {
   cursor: pointer;
   flex-direction: column;
   gap: 5px;
+  padding: 10px;
 }
 
 .hamburger span {
@@ -163,14 +153,14 @@ nav {
 
 /* Full Screen Hero Section */
 .hero-fullscreen {
-  min-height: 100vh;
+  min-height: 80vh;
   background: var(--hero-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--md-sys-color-on-primary);
-  padding: var(--spacing-xxl) var(--spacing-md);
+  padding: var(--spacing-xl) var(--spacing-md);
   position: relative;
 }
 
@@ -193,17 +183,6 @@ nav {
   font-weight: 300;
 }
 
-.hero-fullscreen .hint-text {
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 8px 16px;
-    border-radius: var(--border-radius-xl);
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
 /* Profile Buttons in Hero */
 .hero-buttons {
   display: flex;
@@ -217,7 +196,7 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 100px;
   font-weight: 600;
   text-transform: uppercase;
@@ -226,31 +205,48 @@ nav {
   border: none;
   cursor: pointer;
   text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .btn-primary {
-  background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 .btn-primary:hover {
   box-shadow: var(--shadow-2);
   transform: translateY(-2px);
-  filter: brightness(1.05);
-  color: var(--md-sys-color-on-primary-container);
+  background-color: #004494; /* Darker shade */
+  color: white;
+  text-decoration: none;
 }
 
 .btn-secondary {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  color: white;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   text-decoration: none;
+}
+
+/* Hero specific overrides for buttons */
+.hero-fullscreen .btn-primary {
+    background-color: white;
+    color: var(--md-sys-color-primary);
+}
+.hero-fullscreen .btn-primary:hover {
+    background-color: #f0f0f0;
+}
+.hero-fullscreen .btn-secondary {
+    border-color: rgba(255,255,255,0.4);
+    color: white;
+}
+.hero-fullscreen .btn-secondary:hover {
+    background-color: rgba(255,255,255,0.1);
 }
 
 /* Cards */
@@ -266,7 +262,7 @@ nav {
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-1);
-  transition: box-shadow 0.3s ease, transform 0.2s ease, background-color 0.3s;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
   border: 1px solid var(--md-sys-color-outline-variant);
   height: 100%;
   display: flex;
@@ -299,7 +295,7 @@ nav {
 }
 
 .pub-sidebar {
-  width: 300px;
+  width: 280px;
   position: sticky;
   top: 90px; /* Header height + spacing */
   background: var(--md-sys-color-surface);
@@ -308,7 +304,8 @@ nav {
   box-shadow: var(--shadow-1);
   border: 1px solid var(--md-sys-color-outline-variant);
   flex-shrink: 0;
-  transition: background-color 0.3s;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .pub-content {
@@ -323,7 +320,7 @@ nav {
   border-radius: var(--border-radius-lg);
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .search-input:focus {
@@ -370,16 +367,29 @@ footer a {
     z-index: 900;
     margin-bottom: var(--spacing-lg);
     border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+    box-shadow: var(--shadow-2);
+    padding: var(--spacing-sm) var(--spacing-md);
+    max-height: none;
+  }
+
+  .pub-sidebar h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      display: inline-block;
+  }
+  
+  .filter-group {
+      display: none; /* Hide quick links on mobile to save space, or toggle them */
   }
 }
 
 @media (max-width: 768px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .hero-fullscreen h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
   
   .hamburger {
@@ -400,10 +410,24 @@ footer a {
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     z-index: 999;
+    box-shadow: var(--shadow-1);
+    width: 100%;
+    height: calc(100vh - 70px);
   }
   
   .nav-links.active {
     transform: translateX(0);
+  }
+
+  .nav-links li {
+      width: 100%;
+      text-align: center;
+  }
+
+  .nav-links a {
+      justify-content: center;
+      padding: 15px;
+      font-size: 1.1rem;
   }
   
   .hero-buttons {
@@ -414,5 +438,12 @@ footer a {
   .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Fix for sticky header on mobile */
+  header {
+      position: sticky;
+      top: 0;
+      width: 100%;
   }
 }
