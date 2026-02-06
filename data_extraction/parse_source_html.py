@@ -15,11 +15,13 @@ def parse_html(file_path, output_csv):
         # Based on the user provided HTML snippet, items are in 'nova-legacy-v-publication-item'
         items = soup.find_all('div', class_=lambda x: x and 'nova-legacy-v-publication-item' in x)
 
+        seen_titles = set()
+        unique_publications = []
+
         for item in items:
             # Title and Link
             title_div = item.find('div', itemprop='headline')
             if not title_div:
-                # Fallback for different layouts
                 title_div = item.find('div', class_=lambda x: x and 'publication-item__title' in x)
             
             if not title_div:
@@ -27,6 +29,12 @@ def parse_html(file_path, output_csv):
                 
             link_tag = title_div.find('a')
             title = link_tag.get_text(strip=True) if link_tag else title_div.get_text(strip=True)
+            
+            # Deduplication check
+            if title in seen_titles:
+                continue
+            seen_titles.add(title)
+
             link = ""
             if link_tag and link_tag.has_attr('href'):
                 href = link_tag['href']

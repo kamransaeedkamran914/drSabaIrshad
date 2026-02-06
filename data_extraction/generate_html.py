@@ -30,12 +30,25 @@ def csv_to_html(csv_file, html_file):
                     abstract = abstract[:300] + "..."
 
                 card = f"""
-                <div class="card publication-card" style="margin-bottom: 20px;">
-                    <h3>{title}</h3>
-                    <p><strong>Authors:</strong> {authors}</p>
-                    <p><strong>Date:</strong> {date} <span style="margin-left: 10px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">{pub_type}</span></p>
-                    <p><em>{abstract}</em></p>
-                    <a href="{link}" target="_blank" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View Paper</a>
+                <div class="card publication-card" style="margin-bottom: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); transition: box-shadow 0.2s, transform 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                        <h3 style="font-size: 1.1rem; margin: 0; color: var(--md-sys-color-primary); line-height: 1.4;">{title}</h3>
+                        <span style="white-space: nowrap; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">{pub_type}</span>
+                    </div>
+                    
+                    <div style="font-size: 0.85rem; color: var(--md-sys-color-on-surface-variant);">
+                        <strong>{date}</strong> • {authors}
+                    </div>
+
+                    <p style="font-size: 0.9rem; color: var(--md-sys-color-on-surface-variant); margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        {abstract}
+                    </p>
+
+                    <div style="margin-top: auto; padding-top: 8px;">
+                        <a href="{link}" target="_blank" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--md-sys-color-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                            Read Paper <i class="fas fa-arrow-right" style="font-size: 0.8em;"></i>
+                        </a>
+                    </div>
                 </div>
                 """
                 cards_html += card
